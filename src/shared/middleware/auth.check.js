@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 export const auth_check = (req,res, next) => {
     // To grab cookies for a token, use req.cookies if using cookie-parser middleware.
     // Example: If your token is stored under 'token' cookie key:
+    // const token = req.headers?.authorization; // Only for POSTMAN
     const token = req.cookies?.accesstoken;
     console.log("token in middleware check", token);
     

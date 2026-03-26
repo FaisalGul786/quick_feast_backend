@@ -11,9 +11,14 @@ import restaurantsCollection  from "./modules/catalog/catalog.routes.js";
 import restaurantDetail from "./modules/catalog/catalog.routes.js";
 import placeOrder from "./modules/order/order.routes.js";
 import updateOrderStatus from "./modules/order/order.routes.js";
-import fetchOrders from "./modules/order/order.routes.js"
+import fetchOrders from "./modules/order/order.routes.js";
+import webhookURL from "./modules/webhook/webhook.routes.js";
+import makePayment from "./modules/payment/payment.route.js"
 
 const app = express();
+
+// # must before express.json () as webhook uses express.raw()
+app.use("/stripe/web-hook", express.raw({ type: "application/json" }), webhookURL);
 
 app.use(express.json());
 
@@ -39,6 +44,10 @@ app.use("/api/v1/restaurant", restaurantDetail);
 
 app.use("/api/v1/order", placeOrder); // # for MVP just 1 menu item so using req.params
 app.use("/api/v1/fetch", fetchOrders); // Fetch orders for owner
+
+// # payment stripe triggered by customer
+app.use("/create-payment-intent", makePayment);
+
 
 app.get("/check", (req, res) => {
   res.send("Hello World");

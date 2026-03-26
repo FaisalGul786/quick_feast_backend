@@ -39,9 +39,8 @@ export const placeOrderHandler = async(menu_item_id, quantity, restaurant_id, cu
         }
         
         console.log("order item data obj", orderItemsData);
-        const orderItemsTable = await db.insert(orderItems).values(
-            orderItemsData
-        ).returning();
+        
+        const orderItemsTable = await db.insert(orderItems).values(orderItemsData).returning();
         
         console.log("order items table", orderItemsTable);
         
@@ -85,10 +84,24 @@ export const updatedOrder = async(order_id, status_val)=>{
             order_status : status_val
         }).where(eq(order.id, order_id)).returning();
 
-        console.log("updated status of order", updatedStatus);
+        console.log("updated status of order ← ← ← ← ←", updatedStatus);
         return updatedStatus
         
     }catch(error){
         console.log("Error while updating order status  service")
     }
 }
+
+//  __________________
+// # update order payment method from COD to CARD
+// ______________________
+
+
+export const updateOrderPaymentMethod = async (order_id, method) => {
+    const updated_payment_method = await db.update(order)
+      .set({ payment_method: method })
+      .where(eq(order.id, order_id)).returning()
+
+      console.log("updated payment method ", updated_payment_method);
+      return updated_payment_method;
+  }

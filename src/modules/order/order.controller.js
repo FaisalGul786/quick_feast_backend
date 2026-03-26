@@ -11,6 +11,7 @@ export const placeOrder = async(req,res)=>{
         console.log("data for order from req.body ", req.body);
         // const {quantity, menu_item_id} = req.body;
         const {items} = req.body;
+        console.log("items during placing order from req", items);
 
 
 
@@ -23,7 +24,7 @@ export const placeOrder = async(req,res)=>{
         return res.status(201).json({message: "Order created", orderTable})
         
     } catch(error) {
-        console.log("error while place order controller");
+        console.log("error while place order controller", error);
         
     }
 }
